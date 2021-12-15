@@ -5,9 +5,13 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag adipopbv/flutter:stable
+    - name: Login to Docker Hub
+      run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+    - name: Push to Docker Hub
+      run: docker push adipopbv/flutter:latest
